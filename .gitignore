@@ -1,0 +1,7 @@
+build/*
+cbi.egg-info/*
+dist/*
+venv/*
+*.whl
+.idea
+.vscode

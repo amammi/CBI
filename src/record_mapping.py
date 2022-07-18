@@ -22,6 +22,33 @@
 #
 ##############################################################################
 
+# Struttura del record di testa - codice fisso "RH"
+RH = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 115, 'filler2'),
+    (116, 120, 'campo_non_disponibile')
+]
+
+EF_RH = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 8, 'mittente'),
+    (9, 13, 'ricevente'),
+    (14, 19, 'data_creazione'),
+    (20, 39, 'nome_supporto'),
+    (40, 45, 'filler2'),
+    (46, 52, 'numero_rendicontazioni'),
+    (53, 82, 'filler3'),
+    (83, 89, 'numero_record'),
+    (90, 114, 'filler4'),
+    (115, 120, 'campo_non_disponibile')
+]
+
 # Struttura del record di testa - codice fisso "IM"
 IM = [
     (1, 1, 'filler1'),
@@ -330,7 +357,127 @@ LX = [
     (41, 70, '2_segmento'),
     (71, 100, '3_segmento'),
     (101, 120, 'filler2'),
-    ]
+]
+
+# Struttura del record - codice fisso "61" (Saldo iniziale)
+LXI = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 23, 'filler2'),
+    (24, 28, 'codice_abi_originario_banca'),
+    (29, 33, 'causale'),
+    (34, 49, 'descrizione'),
+    (50, 51, 'tipo_conto'),
+    (52, 74, 'coordinate_bancarie'),
+    (52, 52, 'cin'),
+    (53, 57, 'codice_abi_banca'),
+    (58, 62, 'cab_banca'),
+    (63, 74, 'conto_corrente'),
+    (75, 77, 'codice_divisa'),
+    (78, 83, 'data_contabile'),
+    (84, 84, 'segno'),
+    (85, 99, 'saldo_iniziale_quadratura'),
+    (100, 101, 'codice_paese'),
+    (102, 103, 'check_digit'),
+    (104, 120, 'filler3')
+]
+
+# Struttura del record - codice fisso “62” (Movimento)
+LXII = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 13, 'progressivo_movimento'),
+    (14, 19, 'data_valuta'),
+    (20, 25, 'data_registrazione_e_o_contabile'),
+    (26, 26, 'segno_movimento'),
+    (27, 41, 'importo_movimento'),
+    (42, 43, 'causale_cbi'),
+    (44, 45, 'causale_interna'),
+    (46, 61, 'numero_assegno'),
+    (62, 77, 'riferimento_banca'),
+    (78, 86, 'tipo_riferimento_cliente'),
+    (87, 120, 'descrizione_movimento')
+]
+
+# Struttura del record - codice fisso “63” (Informazioni Movimento)
+LXIII = [
+            (1, 1, 'filler1'),
+            (2, 3, 'tipo_record'),
+            (4, 10, 'numero_progressivo'),
+            (11, 13, 'progressivo_movimento'),
+            (14, 16, 'flag_struttura'),
+            (17, 39, 'identificativo_rapporto'),
+            (40, 120, 'filler2')
+        ],
+
+# Struttura del record - codice fisso “64” (Saldo Finale)
+LXIV = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 13, 'codice_divisa'),
+    (14, 19, 'data_contabile'),
+    (20, 20, 'segno_saldo_contabile'),
+    (21, 35, 'saldo_contabile'),
+    (36, 36, 'segno_saldo_liquido'),
+    (37, 51, 'saldo_liquido'),
+    (52, 105, 'filler2'),
+    (106, 120, 'filler3')
+]
+
+# Struttura del record - codice fisso "65" (Liquidità future)
+LXV = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 32, 'primo_saldo_liquido'),
+    (11, 16, 'primo_saldo_data_liquidita'),
+    (17, 17, 'primo_saldo_segno'),
+    (18, 32, 'primo_saldo_saldo_liquido'),
+    (33, 54, 'secondo_saldo_liquido'),
+    (33, 38, 'secondo_saldo_data_liquidita'),
+    (39, 39, 'secondo_saldo_segno'),
+    (40, 54, 'secondo_saldo_saldo_liquido'),
+    (55, 76, 'terzo_saldo_liquido'),
+    (55, 60, 'terzo_saldo_data_liquidita'),
+    (61, 61, 'terzo_saldo_segno'),
+    (62, 76, 'terzo_saldo_saldo_liquido'),
+    (77, 98, 'quarto_saldo_liquido'),
+    (77, 82, 'quarto_saldo_data_liquidita'),
+    (83, 83, 'quarto_saldo_segno'),
+    (84, 98, 'quarto_saldo_saldo_liquido'),
+    (99, 120, 'quinto_saldo_liquido'),
+    (99, 104, 'quinto_saldo_sata_liquidita'),
+    (105, 105, 'quinto_saldo_segno'),
+    (106, 120, 'quinto_saldo_saldo_liquido')
+]
+
+# Struttura del record - codice fisso "63" (Info movimento con causale ABI record 62 == 48)
+LXIII_CAB_48 = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 13, 'progressivo_movimento'),
+    (14, 16, 'flag_struttura'),
+    (17, 24, 'data_ordine'),
+    (25, 40, 'codifica_fiscale_ordinante'),
+    (41, 80, 'cliente_ordinante'),
+    (81, 120, 'localita')
+]
+
+# Struttura del record - codice fisso "63" (Info movimento con causale ABI record 62 == 48)
+LXIII_CAB_48_YY2 = [
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 13, 'progressivo_movimento'),
+    (14, 16, 'flag_struttura'),
+    (17, 66, 'indirizzo_ordinante'),
+    (67, 100, 'iban_ordinante'),
+    (101, 120, 'filler2')
+]
 
 # Struttura del record - codice fisso “70”
 LXX = [
@@ -481,3 +628,13 @@ BONIFICI_ESTERI = {
     # ...
     'EF': EF_BON_ES, #coda
     }
+
+RENDICONTAZIONE_RH = dict({
+    'RH': RH,
+    '61': LXI,
+    '62': LXII,
+    '63': dict({'std': LXIII, 'cab_48': LXIII_CAB_48, 'yy2': LXIII_CAB_48_YY2}),
+    '64': LXIV,
+    '65': LXV,
+    'EF': EF_RH
+})

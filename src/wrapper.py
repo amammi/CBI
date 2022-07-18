@@ -22,13 +22,10 @@
 #
 ##############################################################################
 
-from record_mapping import OUTPUT_RECORD_MAPPING
-from record_mapping import INPUT_RECORD_MAPPING
-from record_mapping import BONIFICI
-
 FLOWTYPE = 'OUTPUT_RECORD_MAPPING' # default value
 
-#TODO add fields validation as specified in standard
+
+# TODO add fields validation as specified in standard
 class Field(object):
 
     def length(self):
@@ -50,7 +47,7 @@ class Field(object):
 class Record(object):
 
     #we create EF record structure by default
-    def __init__(self, rawrecord='EF', flowtype=FLOWTYPE):
+    def __init__(self, rawrecord='EF', flowtype=FLOWTYPE, causale_cbi=None, is_record_63_yy2=False):
         self.fields = []
         if len(rawrecord) == 2:
             code = rawrecord
@@ -58,12 +55,22 @@ class Record(object):
             code = rawrecord[1:3]
         else:
             raise TypeError('String (%s) must contain 2 or 120 chars'
-                % rawrecord)
+                            % rawrecord)
 
         flowtype = eval(flowtype)
         if code not in flowtype:
             raise IndexError('Unknown record type %s' % code)
-        for field_args in flowtype[code]:
+
+        if causale_cbi == '48' and not is_record_63_yy2:
+            field_args_list = flowtype[code]["cab_48"]
+        elif causale_cbi == '48' and is_record_63_yy2:
+            field_args_list = flowtype[code]["yy2"]
+        elif causale_cbi is not None and causale_cbi != '48':
+            field_args_list = flowtype[code]['std']
+        else:
+            field_args_list = flowtype[code]
+
+        for field_args in field_args_list:
             newfield = Field(*field_args)
             if field_args[2] == 'tipo_record':
                 newfield.content = code
@@ -177,21 +184,44 @@ class Flow(object):
         self.disposals = []
         currentdisposal = Disposal()
         for row in rows[1:len(rows) - 1]:
-            record = Record(row, flowtype=flowtype)
-            if (record['tipo_record'] == firstrecordidentifier
-                and currentdisposal.records):
-                ''' Appends last disposal and creates new disposal
-                with firstrecordidentifier '''
-                self.disposals.append(currentdisposal)
-                currentdisposal = Disposal()
+            code_row = row[1:3]
+            if flowtype == 'RENDICONTAZIONE_RH':
+                if code_row == '63':
+                    record62 = currentdisposal.records[1]
+                    if record62['causale_cbi'] == '48':
+                        if len(currentdisposal.records) == 2:
+                            record = Record(row, flowtype=flowtype, causale_cbi=record62['causale_cbi'])
+                        if len(currentdisposal.records) == 3:
+                            record = Record(row, flowtype=flowtype, causale_cbi=record62['causale_cbi'],
+                                            is_record_63_yy2=True)
+                    else:
+                        record = Record(row, flowtype=flowtype, causale_cbi=record62['causale_cbi'])
+                else:
+                    record = Record(row, flowtype=flowtype)
+            else:
+                record = Record(row, flowtype=flowtype)
+
+            try:
+                if (record['tipo_record'] == firstrecordidentifier
+                        and currentdisposal.records):
+                    ''' Appends last disposal and creates new disposal
+                    with firstrecordidentifier '''
+                    self.disposals.append(currentdisposal)
+                    currentdisposal = Disposal()
+            except IndexError:
+                pass
             currentdisposal.records.append(record)
+
         if currentdisposal.records:
             ''' Appends last disposal '''
             self.disposals.append(currentdisposal)
         lastrecordfound = False
         for disposal in self.disposals:
-            if firstrecordidentifier in [r['tipo_record']
-                for r in disposal.records]:
+            tipo_records = []
+            for r in disposal.records:
+                tipo_records.append(r['tipo_record'])
+
+            if firstrecordidentifier in tipo_records:
                 lastrecordfound = True
         if not lastrecordfound:
             self.disposals = []

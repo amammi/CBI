@@ -1,1 +1,1 @@
-import wrapper
+from . import wrapper

@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='cbi',
-      version='0.2',
+      version='0.4.13',
       package_dir={'cbi': 'src'},
       packages=['cbi'],
       description='CBI flows wrapper',
@@ -9,9 +9,9 @@ setup(name='cbi',
       author_email='lorenzo.battistini@agilebg.com',
       url='https://github.com/eLBati/CBI',
       classifiers=[
-         'Development Status :: 3 - Alpha',
-         'Environment :: Plugins',
-         'Intended Audience :: Developers',
+          'Development Status :: 3 - Alpha',
+          'Environment :: Plugins',
+          'Intended Audience :: Developers',
          'Intended Audience :: Information Technology',
          'License :: OSI Approved :: GNU General Public License (GPL)',
          'Operating System :: OS Independent',
@@ -20,4 +20,4 @@ setup(name='cbi',
       ],
       long_description=open('README.rst').read(),
       license='GPL-3',
-     )
+      )
