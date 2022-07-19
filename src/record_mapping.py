@@ -403,14 +403,18 @@ LXII = [
 
 # Struttura del record - codice fisso “63” (Informazioni Movimento)
 LXIII = [
-            (1, 1, 'filler1'),
-            (2, 3, 'tipo_record'),
-            (4, 10, 'numero_progressivo'),
-            (11, 13, 'progressivo_movimento'),
-            (14, 16, 'flag_struttura'),
-            (17, 39, 'identificativo_rapporto'),
-            (40, 120, 'filler2')
-        ],
+    (1, 1, 'filler1'),
+    (2, 3, 'tipo_record'),
+    (4, 10, 'numero_progressivo'),
+    (11, 13, 'progressivo_movimento'),
+    (14, 16, 'flag_struttura'),
+    (17, 39, 'identificativo_rapporto'),
+    (17, 21, 'abi'),
+    (22, 26, 'cab'),
+    (27, 38, 'codice_conto'),
+    (39, 39, 'cin'),
+    (40, 120, 'filler2')
+],
 
 # Struttura del record - codice fisso “64” (Saldo Finale)
 LXIV = [

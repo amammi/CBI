@@ -22,6 +22,8 @@
 #
 ##############################################################################
 
+from .record_mapping import RENDICONTAZIONE_RH, BONIFICI, BONIFICI_ESTERI, OUTPUT_RECORD_MAPPING, INPUT_RECORD_MAPPING, MAV
+
 FLOWTYPE = 'OUTPUT_RECORD_MAPPING' # default value
 
 
@@ -65,7 +67,7 @@ class Record(object):
             field_args_list = flowtype[code]["cab_48"]
         elif causale_cbi == '48' and is_record_63_yy2:
             field_args_list = flowtype[code]["yy2"]
-        elif causale_cbi is not None and causale_cbi != '48':
+        elif causale_cbi in ['34', 'Z1'] or (causale_cbi is not None and causale_cbi != '48'):
             field_args_list = flowtype[code]['std']
         else:
             field_args_list = flowtype[code]
