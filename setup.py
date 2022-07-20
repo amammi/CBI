@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='cbi',
-      version='0.4.15',
+      version='0.4.17',
       package_dir={'cbi': 'src'},
       packages=['cbi'],
       description='CBI flows wrapper',

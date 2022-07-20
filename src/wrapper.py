@@ -239,3 +239,14 @@ class Flow(object):
                 f.write(str(record) + '\r\n')
         f.write(str(self.footer) + '\r\n')
         f.close()
+
+    def write_on_stream(self):
+        from io import StringIO
+        f = StringIO()
+        f.write(str(self.header) + '\r\n')
+        for disposal in self.disposals:
+            for record in disposal.records:
+                f.write(str(record) + '\r\n')
+        f.write(str(self.footer) + '\r\n')
+        f.seek(0)
+        return f
